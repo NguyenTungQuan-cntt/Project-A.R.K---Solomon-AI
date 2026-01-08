@@ -1,0 +1,711 @@
+/* src/styles/MessageList.css */
+.message-list {
+  flex: 1; /* Chiếm không gian còn lại trong chat-main-content */
+  overflow-y: auto; /* Cho phép cuộn dọc cho danh sách tin nhắn */
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Khoảng cách giữa các tin nhắn */
+  padding: 10px;
+  box-sizing: border-box;
+  min-height: 0; /* Quan trọng để có thể cuộn */
+  max-height: 100%; /* Đảm bảo không vượt quá chat-main-content */
+  margin: 0; /* Loại bỏ margin có thể gây ra khoảng trống */
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #fafafa;
+  margin-bottom: 10px; /* Khoảng cách phía dưới */
+  scroll-behavior: smooth; /* Có thể giữ nếu muốn cuộn mượt */
+}
+
+.message-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  /* border-bottom: 1px solid #eee; /* Có thể thêm để phân cách */
+  padding-bottom: 5px;
+  margin-bottom: 0; /* Đảm bảo không có margin-bottom */
+}
+
+.message-container.user {
+  justify-content: flex-end;
+}
+
+.message-container.ai {
+  justify-content: flex-start;
+}
+
+.message-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+.message-avatar.ai {
+  background-color: #e0e0e0;
+  justify-content: flex-start;
+}
+
+.message-avatar.user {
+  background-color: #5cc25c;
+  justify-content: flex-end;
+}
+
+.message {
+  max-width: 70%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  word-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.message.user {
+  background-color: #f2fe07;
+  align-self: flex-end;
+}
+
+.message.ai {
+  background-color: #128af3;
+  align-self: flex-start;
+}
+
+.copy-button {
+  background-color: transparent;
+  border: 1px solid #ed4f4f;
+  border-radius: 3px;
+  padding: 2px 4px;
+  font-size: 0.8em;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+}
+
+.message-container:hover .copy-button {
+  opacity: 1;
+}
+
+.copy-button:hover {
+  background-color: #ed5b5b;
+}
+
+.copy-button.user {
+  justify-content: flex-start;
+}
+
+.copy-button.ai {
+  justify-content: flex-end;}
+
+.copy-button.image {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 2px 4px;
+}
+
+.copy-button.image:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.message-content-and-image {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* --- CSS CHO PHẦN NỘI DUNG CÓ CODE --- */
+.message-content-and-code {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.message-text-content {
+  margin-bottom: 4px;
+  cursor: pointer;
+}
+
+.message.user .message-content:hover {
+  text-decoration: underline;
+}
+
+.message-image-container {
+  position: relative; /* Cho phép nút con định vị tuyệt đối */
+  display: inline-block; /* Hoặc block, tùy layout mong muốn */
+  max-width: 100%;
+  margin-top: 5px;
+}
+
+.message-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+  display: block;
+}
+
+.message-image-controls {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: flex;
+  gap: 5px; /* Khoảng cách giữa các nút */
+}
+
+.copy-button.image,
+.save-button.image {
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 3px 6px;
+  font-size: 0.8em;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+
+.message-container:hover .copy-button.image,
+.message-container:hover .save-button.image {
+  opacity: 1;
+}
+
+/* --- CSS CHO ẢNH NGƯỜI DÙNG ĐÍNH KÈM --- */
+.message-attachments-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 5px;
+  align-self: flex-start; /* Căn preview về bên trái cho người dùng */
+}
+
+.attachment-preview-item {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+}
+
+.attachment-image-preview-container {
+  /* Có thể thêm style nếu cần hiển thị ảnh preview thật */
+  width: 100%;
+  height: 60px;
+  overflow: hidden;
+}
+
+.attachment-image-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.7em;
+  color: #333;
+  word-break: break-all;
+  text-align: center;
+  width: 100%;
+}
+
+.attachment-image-placeholder span:first-child {
+  margin-bottom: 2px; /* Khoảng cách giữa icon và tên file */
+}
+
+.attachment-name {
+  font-size: 0.7em;
+  color: #333;
+  word-break: break-all;
+  text-align: center;
+}
+
+/* Style chung cho container của ảnh/video AI */
+.message-media-container {
+  position: relative; /* Để các nút con có thể absolute relative với container này */
+  display: inline-block; /* Hoặc block, tùy layout mong muốn */
+}
+
+/* Style cho nút lưu ảnh/video */
+.message-media-save-button {
+  position: absolute;
+  top: 5px; /* Khoảng cách từ trên xuống */
+  right: 5px; /* Khoảng cách từ phải sang */
+  z-index: 10; /* Đảm bảo nút ở trên cùng so với ảnh/video */
+  background-color: rgba(0, 0, 0, 0.5); /* Nền trong suốt một chút để không che ảnh/video */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 2px 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.message-media-save-button:hover {
+  background-color: rgba(0, 0, 0, 0.7); /* Tối hơn một chút khi hover */
+}
+
+/* Cập nhật style cho container ảnh/video để nút lưu không bị che */
+.message-image-container,
+.message-video-container {
+  margin-top: 8px;
+  /* position: relative; */ /* Bây giờ được thay bằng .message-media-container */
+}
+
+.message-image-16-9,
+.message-video-16-9 {
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; /* (9 / 16) * 100% = 56.25% để giữ tỷ lệ 16:9 */
+  position: relative;
+}
+
+.message-image-16-9 img,
+.message-video-16-9 video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+
+
+/* --- CẬP NHẬT: CSS cho nội dung văn bản --- */
+.message-text-content {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  /* Thêm phông cho CJK (Trung, Nhật, Hàn) */
+  font-family: "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  /* Thêm phông cho Ả Rập, Thái, v.v. nếu cần */
+  /* font-family: "Segoe UI", "Noto Sans Arabic", "Noto Sans Thai", sans-serif; */
+  /* font-family: "Segoe UI", "Noto Sans Hebrew", "Noto Sans Hebrew UI", sans-serif; */
+  /* font-family: "Segoe UI", "Noto Sans Cyrillic", sans-serif; */
+  /* Bạn có thể kết hợp nhiều phông chữ trong một chuỗi */
+  font-family: "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Noto Sans Arabic", "Noto Sans Thai", "Noto Sans Hebrew", "Noto Sans Cyrillic", sans-serif;
+  text-align: left;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow: hidden;
+  transform: translateZ(0);
+  /* max-height: 400px; */
+  /* overflow-y: auto; */
+  /* overflow-x: auto; */
+  /* padding: 5px; */
+  /* overflow: visible; /* Cho phép nội dung tràn (nhưng sẽ được MessageList cuộn) */
+}
+
+/* --- CSS CHO CÔNG THỨC LATEX --- */
+.katex-display {
+  overflow-x: auto; /* Cho phép cuộn ngang nếu công thức quá dài */
+  overflow-y: hidden; /* Ẩn phần tràn dọc nếu không muốn cuộn riêng */
+  text-align: center;
+  margin: 0.5em 0;
+  padding: 0.5em 0;
+  display: block;
+  /* --- CÓ THỂ GIỚI HẠN CHIỀU CAO CHO CÔNG THỨC DISPLAY (TÙY CHỌN) --- */
+  /* max-height: 200px; /* Giới hạn chiều cao */
+  /* overflow-y: auto; /* Cho phép cuộn dọc nếu công thức quá cao */
+  /* Nếu bạn không muốn giới hạn và muốn nó cuộn cùng MessageList: */
+  /* max-height: none; /* hoặc không đặt thuộc tính max-height */
+  /* overflow-y: visible; /* hoặc không đặt thuộc tính overflow-y */
+}
+
+.katex-inline {
+  margin: 0 0.2em;
+  /* overflow: visible; /* hoặc không đặt thuộc tính overflow */
+}
+
+.katex-display span, .katex-inline span {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* CSS cho lỗi LaTeX */
+.latex-error {
+  color: #e74c3c;
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+.message-code-block-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden; /* Quan trọng để SyntaxHighlighter không bị tràn */
+}
+
+.message-code-block-header {
+  background-color: #f0f0f0;
+  padding: 5px 10px;
+  border-bottom: 1px solid #ccc;
+  font-size: 0.8em;
+  font-weight: bold;
+  color: #666;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.code-language-label {
+  font-family: monospace;
+}
+
+.message-code-block-content {
+  /* overflow-x: auto; /* Không cần thiết vì SyntaxHighlighter có overflow riêng */
+  padding: 5px; /* Padding có thể được đặt trong customStyle của SyntaxHighlighter */
+}
+
+/* --- CSS CHO SYNTAX HIGHLIGHTER (nếu cần override) --- */
+.hljs { 
+background: #f8f8f8;
+padding: 10px; 
+border-radius: 0 0 5px 5px;
+font-size: 0.9em; 
+overflow-x: auto; 
+} 
+
+
+.copy-button.code {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 2px 4px;
+  cursor: pointer;
+  z-index: 1;
+  transition: opacity 0.2s;
+}
+
+.message-code-block-wrapper:hover .copy-button.code {
+  opacity: 1;
+}
+
+.copy-button.code:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* --- CSS CHO PHẦN SUY LUẬN --- */
+.message-thinking-section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+.thinking-toggle-button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 0.8em;
+  align-self: flex-start;
+  margin-bottom: 5px;
+}
+
+.thinking-toggle-button:hover {
+  background-color: #e0e0e0;
+}
+
+.message-thinking-content {
+  font-style: italic;
+  color: #666;
+  font-size: 0.9em;
+  padding: 5px;
+  background-color: #f9f9f9;
+  border-radius: 3px;
+  border-left: 2px solid #ccc;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+/* --- CSS CHO ẢNH (nếu có) --- */
+.message-image-container {
+  position: relative;
+  display: inline-block;
+}
+
+.message-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* --- CSS CHO TỆP ĐÍNH KÈM (nếu có) --- */
+.message-attachments-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 5px;
+  font-size: 0.8em;
+  color: #666;
+}
+
+.attachment-preview-item {
+  background-color: #e0e0e0;
+  padding: 2px 5px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.attachment-image-preview-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 5px;
+}
+
+.attachment-image-preview {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 3px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+}
+
+/* --- CSS CHO TIMESTAMP --- */
+.message-timestamp {
+  font-size: 0.75em;
+  color: #151414;
+  align-self: flex-end;
+}
+
+.message.user .message-timestamp {
+  align-self: flex-end;
+}
+
+.message.ai .message-timestamp {
+  align-self: flex-start;
+}
+
+.message-video-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px; /* Khoảng cách từ nội dung hoặc code phía trên */
+}
+
+.video-thumbnail-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.video-thumbnail {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover; /* Giữ tỷ lệ ảnh */
+}
+
+.play-button-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.play-button-overlay:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.embedded-video {
+  max-width: 100%;
+  border-radius: 8px;
+  aspect-ratio: 16 / 9; /* Đảm bảo tỷ lệ 16:9 nếu iframe hỗ trợ */
+}
+
+.video-link {
+  color: #007bff;
+  text-decoration: underline;
+  font-style: italic;
+}
+
+.video-link:hover {
+  color: #0056b3;
+}
+
+.copy-button.video {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 2px 4px;
+  cursor: pointer;
+  z-index: 1;
+  transition: opacity 0.2s;
+}
+
+.message-video-container:hover .copy-button.video {
+  opacity: 1;
+}
+
+.copy-button.video:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.user-message-file-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 5px;
+  max-height: 100px;
+  overflow-y: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  align-self: stretch;
+}
+
+.user-message-file-item {
+  position: relative;
+  display: inline-block;
+  max-width: 60px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: #fff;
+  box-sizing: border-box;
+  align-self: flex-start;
+}
+
+.user-message-image-preview-small,
+.user-message-video-preview-small {
+  max-width: 100%;
+  max-height: 60px;
+  object-fit: scale-down;
+  border-radius: 3px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.user-message-file-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.user-message-file-name {
+  font-size: 0.7em;
+  color: #333;
+  word-break: break-all;
+  text-align: center;
+  margin-bottom: 2px;
+}
+
+.user-message-file-size {
+  font-size: 0.6em;
+  color: #999;
+  align-self: center;
+}
+
+.remove-file-button {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7em;
+  z-index: 2;
+}
+
+.remove-file-button:hover {
+  background-color: #c0392b;
+}
+
+.remove-file-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* --- CSS CHO INDICATOR ĐANG GÕ --- */
+.typing-indicator-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.5em;
+}
+
+.dot {
+  width: 0.5em;
+  height: 0.5em;
+  background-color: #6e4df1;
+  border-radius: 50%;
+  margin: 0 2px;
+  animation: bounce 1.5s infinite ease-in-out;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-5px);
+  }
+}
+
+.agent-badge {
+  background-color: #007bff;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 0.7em;
+  align-self: flex-start;
+  margin-bottom: 5px;
+}
+
+

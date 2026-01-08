@@ -1,0 +1,19 @@
+/* src/styles/NewConversationButton.css */
+.new-conversation-button {
+  background-color: #27ae60; /* Màu xanh lá */
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: background-color 0.2s;
+}
+
+.new-conversation-button:hover {
+  background-color: #219653;
+}

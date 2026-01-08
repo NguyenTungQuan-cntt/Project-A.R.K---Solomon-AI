@@ -1,0 +1,220 @@
+/* src/styles/ChatPage.css */
+/* Khóa chiều cao toàn trang */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Quan trọng: Ngăn toàn bộ trang bị cuộn */
+  font-family: sans-serif;
+}
+
+.chat-page {
+  display: flex;
+  flex: 1;
+  height: 100vh; /* Chiều cao toàn màn hình */
+  overflow: hidden; /* Quan trọng */
+}
+
+.chat-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #fff;
+  margin: 10px;
+  border-radius: 8px;
+  /* Tính toán chiều cao để lấp đầy chat-page trừ đi margin */
+  height: calc(100vh - 20px);
+  overflow: hidden; /* Quan trọng: Ngăn container chính bị cuộn */
+}
+
+.chat-controls {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+  flex-shrink: 0; /* Không co lại */
+}
+
+.model-selector-container {
+  position: relative; /* Quan trọng để định vị dropdown */
+  display: inline-block;
+}
+
+.model-selector-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+  color: #333;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.model-selector-button:hover {
+  background-color: #e0e0e0;
+  border-color: #aaa;
+}
+
+.model-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-icon {
+  transition: transform 0.2s;
+  width: 16px;
+  height: 16px;
+}
+
+.dropdown-icon.open {
+  transform: rotate(180deg); /* Quay icon khi mở */
+}
+
+/* --- CẬP NHẬT: CSS CHO DANH SÁCH DROPDOWN --- */
+.model-dropdown-list {
+  position: absolute;
+  top: 100%; /* Hiển thị ngay dưới button */
+  left: 0;
+  right: 0; /* Chiều rộng bằng button */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  list-style: none;
+  padding: 0;
+  margin: 2px 0 0 0; /* Khoảng cách nhỏ từ button */
+  z-index: 1000; /* Đảm bảo hiển thị trên các phần tử khác */
+  /* overflow-y: auto; /* Nếu có nhiều item, có thể thêm cuộn */
+  max-height: 350px; /* Giới hạn chiều cao nếu cần */
+  /* display: block; /* Không cần vì JSX đã xử lý hiển thị */
+}
+
+/* Hiệu ứng fade in/out (tùy chọn) */
+.model-dropdown-list {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.2s ease-out, visibility 0.2s ease-out, transform 0.2s ease-out;
+}
+
+.model-selector-container:hover .model-dropdown-list,
+.model-dropdown-list[style*="display: block"] { /* Không hiệu quả nếu dùng JSX conditional rendering */
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Cách hiệu quả hơn nếu dùng state `isOpen` trong JSX: */
+/* Không cần CSS đặc biệt cho hiển thị/ẩn, JSX {isOpen && ...} đã xử lý */
+
+.model-dropdown-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s;
+}
+
+.model-dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.model-dropdown-item:hover {
+  background-color: #f5f5f5;
+}
+
+.model-dropdown-item.selected {
+  background-color: #007bff;
+  color: white;
+}
+
+
+.clear-chat-button-top,
+.new-conversation-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.new-conversation-button {
+  background-color: #27ae60;
+}
+
+.clear-chat-button-top:hover,
+.new-conversation-button:hover {
+  background-color: #c0392b;
+}
+
+.new-conversation-button:hover {
+  background-color: #219653;
+}
+
+/* Phần chính chứa MessageList và MessageInput */
+.chat-main-content {
+  flex: 1; /* Chiếm không gian còn lại */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Quan trọng: Ngăn phần chính bị cuộn nếu không cần */
+  min-height: 0; /* Quan trọng: Cho phép flex item con cuộn */
+  min-width: 0;
+}
+
+.input-controls-row {
+  display: flex;
+  gap: 5px;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.input-control-button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+
+.input-control-button:hover {
+  background-color: #e0e0e0;
+  border-color: #aaa;
+}
+
+.input-control-button.active {
+  background-color: #007bff;
+  border-color: #0056b3;
+  color: white;
+}
+
+.input-control-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.footer-note-below-input {
+  text-align: center;
+  color: #999;
+  font-size: 0.8em;
+  font-style: italic;
+  padding: 5px 0;
+  margin: 0;
+  flex-shrink: 0; /* Không co lại */
+}

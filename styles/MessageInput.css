@@ -1,0 +1,242 @@
+/* src/styles/MessageInput.css */
+.message-input-form {
+  display: block;
+  width: 100%;
+  /* border: 1px solid #ccc; /* Có thể bỏ vì container cha (ChatPage) đã có viền */
+  /* border-radius: 8px; /* Có thể bỏ vì container cha (ChatPage) đã có viền */
+  /* padding: 5px; /* Có thể bỏ */
+}
+
+.input-and-send-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-color: #ffffff;
+  padding: 5px;
+  box-sizing: border-box;
+  /* overflow: hidden; /* Có thể không cần nếu không muốn giới hạn chiều cao */
+}
+
+/* Row chứa các nút điều khiển (đính kèm, ghi âm) và preview file */
+.input-controls-row-above-textarea {
+  display: flex;
+  align-items: flex-start; /* Căn các item theo cạnh trên */
+  gap: 5px;
+  padding: 5px;
+  /* border-bottom: 1px solid #eee; /* Viền phân cách với textarea nếu cần */
+  /* background-color: #fff; /* Nền cho row nếu cần */
+  /* border-radius: 15px 15px 0 0; /* Bo góc trên nếu row có nền */
+  /* overflow-x: auto; /* Cho phép cuộn ngang nếu có nhiều file preview */
+  /* flex-wrap: wrap; /* Cho phép xuống dòng nếu quá nhiều file */
+  /* align-self: stretch; /* Căn đều theo chiều ngang */
+  /* margin-bottom: 5px; /* Khoảng cách dưới row */
+}
+
+/* Nút đính kèm file - góc trên bên trái */
+.attach-file-button-inside {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  background: none;
+  border: 0;
+  /*border-radius: 5px;*/
+  padding: 5px;
+  cursor: pointer;
+  color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, border-color 0.2s;
+  z-index: 1; /* Đảm bảo nút luôn trên các phần tử khác */
+  flex-shrink: 0;
+}
+
+.attach-file-button-inside:hover {
+  color: #007bff;
+  border-color: #007bff;
+}
+
+.attach-file-button-inside:disabled {
+  color: #cccccc;
+  border-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Nút ghi âm - góc trên bên phải */
+.mic-button-inside {
+  position: absolute;
+  top: 5px;
+  right: 10px; /* Khoảng cách từ nút Send */
+  background: none;
+  border: 0;
+  /*border-radius: 5px;*/
+  padding: 5px;
+  cursor: pointer;
+  color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, border-color 0.2s;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.mic-button-inside:hover {
+  color: #007bff;
+  border-color: #007bff;
+}
+
+.mic-button-inside.listening {
+  color: #e74c3c;
+  border-color: #e74c3c;
+}
+
+.mic-button-inside:disabled {
+  color: #cccccc;
+  border-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Container cho các file preview */
+.attached-files-preview-above-input {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 5px;
+  margin-top: 5px; /* Khoảng cách từ các nút điều khiển */
+  margin-left: 5px; /* Khoảng cách từ viền trái */
+  margin-right: 5px; /* Khoảng cách đến viền phải */
+  /* border: 1px solid #eee; /* Viền cho khu vực preview nếu cần */
+  /* border-radius: 5px; /* Bo viền cho khu vực preview nếu cần */
+  /* background-color: #f0f0f0; /* Nền cho khu vực preview nếu cần */
+  max-height: 100px; /* Giới hạn chiều cao */
+  overflow-y: auto; /* Cho phép cuộn nếu có nhiều file */
+  align-self: stretch; /* Căn đều theo chiều ngang */
+}
+
+.attached-file-item {
+  position: relative;
+  display: inline-block;
+  max-width: 100px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: #fff;
+  box-sizing: border-box;
+  align-self: flex-start; /* Căn theo cạnh trên */
+}
+
+.attached-image-preview-small,
+.attached-video-preview-small {
+  max-width: 40px;
+  max-height: 45px;
+  object-fit: scale-down;
+  border-radius: 3px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.attached-file-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.attached-file-name {
+  font-size: 0.8em;
+  color: #333;
+  word-break: break-all;
+  text-align: center;
+  margin-bottom: 2px;
+}
+
+.attached-file-size {
+  font-size: 0.7em;
+  color: #999;
+  align-self: center;
+}
+
+.remove-file-button {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7em;
+  z-index: 2;
+}
+
+.remove-file-button:hover {
+  background-color: #c0392b;
+}
+
+.remove-file-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Ô nhập văn bản - có padding để nhường chỗ cho các nút điều khiển */
+.message-input {
+  width: 100%;
+  /* padding: 12px 40px 12px 40px; /* Thêm padding để nhường chỗ cho nút Send (phải) và nút đính kèm (trái) */
+  padding: 12px 40px 12px 40px; /* padding: top right bottom left */
+  border: none; /* Bỏ border vì container cha đã có */
+  border-radius: 15px; /* Bo góc nhẹ */
+  font-size: 1em;
+  outline: none;
+  /* height: 60px; /* Bỏ height cố định */
+  resize: none; /* Không cho phép kéo dãn */
+  overflow-y: auto; /* Cho phép cuộn nội bộ nếu nội dung quá dài */
+  box-sizing: border-box;
+  background-color: transparent; /* Nền trong suốt để thấy nền của container cha */
+  align-self: stretch; /* Căn đều theo chiều ngang */
+  min-height: 30px; /* Chiều cao tối thiểu */
+  max-height: 200px; /* Chiều cao tối đa */
+}
+
+.message-input:focus {
+  background-color: white; /* Làm nổi bật khi focus */
+  border-radius: 15px;
+}
+
+/* Nút gửi - góc dưới bên phải */
+.send-button-inside {
+  position: absolute;
+  right: 6px; /* Căn vào viền phải của container cha */
+  bottom: 6px; /* Căn vào viền dưới của container cha */
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  padding: 0;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  z-index: 1; /* Đảm bảo nút luôn trên cùng */
+}
+
+.send-button-inside:hover {
+  background-color: #046ee0;
+}
+
+.send-button-inside:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}

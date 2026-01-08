@@ -1,0 +1,201 @@
+/* src/styles/ConversationHistorySidebar.css */
+.conversation-history-sidebar {
+  width: 250px;
+  background-color: #fffffe;
+  padding: 30px;
+  box-sizing: border-box;
+  border-left: 1px solid #ccc;
+  /* overflow-y: auto; */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.conversation-history-sidebar h3 {
+  margin-top: 0;
+  color: #2c3e50;
+  text-align: center;
+}
+
+/* Container cho input và icon */
+.search-input-container {
+  position: relative; /* Cho phép icon định vị tuyệt đối bên trong */
+  margin-bottom: 10px;
+}
+
+.search-input {
+  width: 100%; /* Chiếm toàn bộ chiều rộng của container */
+  padding: 8px 30px 8px 12px; /* Thêm padding-right để nhường chỗ cho icon */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 0.9em;
+  outline: none;
+  box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước */
+}
+
+.search-input:focus {
+  border-color: #44a8ea;
+}
+
+/* CSS cho icon kính lúp */
+.search-input-icon {
+  position: absolute;
+  right: 8px; /* Căn vào bên phải của container */
+  top: 50%; /* Căn giữa theo chiều dọc */
+  transform: translateY(-50%); /* Dịch chuyển lên 50% chiều cao của icon để căn chính xác */
+  color: #999; /* Màu icon */
+  font-size: 1em; /* Kích thước icon */
+  pointer-events: none; /* Đảm bảo icon không chặn click vào input */
+}
+
+.clear-all-history-button {
+  background-color: #e74c3c; /* Màu đỏ */
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin-bottom: 10px; /* Khoảng cách dưới nút */
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.2s;
+}
+
+.clear-all-history-button:hover {
+  background-color: #c0392b; /* Màu đỏ đậm hơn khi hover */
+}
+
+.history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+  overflow-y: auto;
+  display: flex; /* Dùng flexbox để render các mục */
+  flex-direction: column;
+}
+
+.history-item {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 7px;
+  margin-bottom: 2px;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer; /* Thêm con trỏ chỉ tay */
+  transition: background-color 0.2s; /* Hiệu ứng chuyển màu nền */
+}
+
+.history-item:hover {
+  background-color: #d6eaf8; /* Màu nền khi hover */
+}
+
+.history-preview {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.preview-sender.user {
+  color: #2bbd68;
+  font-weight: bold;
+}
+
+.preview-sender.ai {
+  color: #3eadf7;
+  font-weight: bold;
+}
+
+.preview-text {
+  font-size: 0.9em;
+  color: #555;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* CSS cho tiêu đề nhóm thời gian */
+.time-label-header {
+  padding: 8px 0;
+  font-weight: bold;
+  color: #1c1e1e;
+  font-size: 0.9em;
+  text-align: center;
+  background-color: #d5dbdb; /* Màu nền nhẹ cho tiêu đề */
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  margin: 5px 0; /* Khoảng cách trên/dưới */
+}
+
+.history-item {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex-shrink: 0; /* Không co lại */
+}
+
+.history-item:hover {
+  background-color: #d6eaf8;
+}
+
+.history-preview {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.preview-sender.user {
+  color: #27ae60;
+  font-weight: bold;
+}
+
+.preview-sender.ai {
+  color: #3498db;
+  font-weight: bold;
+}
+
+.preview-text {
+  font-size: 0.9em;
+  color: #0b0b0b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.remove-history-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 5px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.8em;
+  /* Ngăn con trỏ chỉ tay lan sang nút xóa */
+  /* cursor: pointer; /* Bỏ khỏi nút xóa để không bị ảnh hưởng bởi hover của item */
+}
+
+.remove-history-button:hover {
+  background-color: #c0392b;
+}
+
+/* Thêm CSS cho thông báo "Không tìm thấy" */
+.no-results {
+  padding: 10px;
+  text-align: center;
+  color: #999;
+  font-style: italic;
+}
