@@ -170,7 +170,7 @@ class EphemeralAgent:
                     headers = {"Authorization": f"Bearer {shield.poll_key}"} if getattr(shield, 'poll_key', None) else {}
 
                     # 2. Quan trọng: Truyền tham số headers=headers vào đây
-                    resp = requests.get(url, headers=headers, timeout=30)
+                    resp = requests.get(url, headers=headers, timeout=90)
                     
                     if resp.status_code == 200 and len(resp.content) > 5000:
                         return {"text": ai_text, "media_bytes": resp.content}
@@ -180,10 +180,22 @@ class EphemeralAgent:
                 # 4. Fallback: Luôn trả về text để tránh bong bóng chat trống
                 return {"text": ai_text, "media_bytes": None, "error_msg": "Media tạm thời không khả dụng"}
 
+        # --- XỬ LÝ LỖI TẬP TRUNG BẰNG GOOGLE_EXCEPTIONS ---
+        except google_exceptions.ResourceExhausted:
+            logger.warning(f"⚠️ Key {self.key_idx} hết hạn mức. Tự động cấm key 10 phút.")
+            shield.ban_key(self.key, duration=600)
+            return {"text": "Dòng truyền tin này đang quá tải. Solomon đang chuyển hướng, vui lòng gửi lại sau 10 giây.", "media_bytes": None}
+            
+        except google_exceptions.InvalidArgument as e:
+            logger.error(f"❌ Tham số không hợp lệ: {e}")
+            return {"text": "Yêu cầu chứa nội dung không hợp lệ hoặc quá lớn.", "media_bytes": None}
+
         except Exception as e:
-            logger.error(f"Agent Error: {str(e)}")
+            logger.error(f"‼️ Lỗi Agent không xác định: {traceback.format_exc()}")
             raise e
+            
         finally:
+            # Giải phóng tài nguyên
             self.client = None
             gc.collect()
 
@@ -242,7 +254,9 @@ def generate_media():
 
         return jsonify({
             "response": final_text or "Solomon đã nhận được yêu cầu và đang xử lý...",
-            "url": image_url or "", # Trả về chuỗi rỗng thay vì None để tránh lỗi Frontend
+            "url": image_url or "",       # Key chung
+            "imageUrl": image_url or "",  # Khớp với logic ChatContext.tsx tìm 'imageUrl'
+            "videoUrl": image_url or "",  # Khớp với logic ChatContext.tsx tìm 'videoUrl'
             "status": "success" if image_url else "text_only"
         }), 200
     except Exception as e:
