@@ -369,14 +369,38 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }));
 
       if (mode === 'image') {
-        const imageResponse = await fetchImageResponse(content, attachmentsForApi);
-        aiResponseContent = imageResponse.description;
-        aiImageUrl = imageResponse.imageUrl;
-      } else if (mode === 'video') {
-        const videoResponse = await fetchVideoResponse(content, attachmentsForApi);
-        aiResponseContent = videoResponse.description;
-        aiVideoUrl = videoResponse.videoUrl;
-        aiThumbnailUrl = videoResponse.thumbnailUrl;
+      const imageResponse = await fetchImageResponse(content, attachmentsForApi);
+      aiResponseContent = imageResponse.description; // Có thể là chuỗi rỗng
+      aiImageUrl = imageResponse.imageUrl; // Có thể là undefined, null, hoặc chuỗi rỗng
+
+      // --- SỬA LẠI KIỂM TRA FALLBACK ---
+      if (!aiImageUrl) { // Nếu imageUrl không hợp lệ
+        console.warn("fetchImageResponse không trả về imageUrl hợp lệ:", imageResponse);
+        // Không ghi đè aiResponseContent nếu description có giá trị
+        // Nếu cả description và imageUrl đều không có, mới hiển thị thông báo lỗi
+        if (!aiResponseContent) { // Nếu description cũng không có
+          aiResponseContent = "Hình ảnh yêu cầu không được tạo thành công.";
+        }
+        // Nếu có description, giữ nguyên description, và không có imageUrl -> MessageList sẽ không hiển thị ảnh
+      }
+      // Nếu aiImageUrl hợp lệ, giữ nguyên aiResponseContent và aiImageUrl
+    } else if (mode === 'video') {
+      const videoResponse = await fetchVideoResponse(content, attachmentsForApi);
+      aiResponseContent = videoResponse.description; // Có thể là chuỗi rỗng
+      aiVideoUrl = videoResponse.videoUrl; // Có thể là undefined, null, hoặc chuỗi rỗng
+      aiThumbnailUrl = videoResponse.thumbnailUrl; // Có thể là undefined, null, hoặc chuỗi rỗng
+
+      // --- KIỂM TRA FALLBACK ---
+      if (!aiVideoUrl) { // Nếu videoUrl không hợp lệ
+        console.warn("fetchVideoResponse không trả về videoUrl hợp lệ:", videoResponse);
+        // Không ghi đè aiResponseContent nếu description có giá trị
+        // Nếu cả description và videoUrl đều không có, mới hiển thị thông báo lỗi
+        if (!aiResponseContent) { // Nếu description cũng không có
+          aiResponseContent = "Video yêu cầu không được tạo thành công.";
+        }
+        // Nếu có description, giữ nguyên description, và không có videoUrl -> MessageList sẽ không hiển thị video
+      }
+      // Nếu aiVideoUrl hợp lệ, giữ nguyên aiResponseContent, aiVideoUrl và aiThumbnailUrl (nếu có)
       } else if (mode === 'research') {
         const researchResponse = await fetchResearchResponse(content, attachmentsForApi);
         aiResponseContent = researchResponse.summary;
@@ -490,5 +514,4 @@ export const useChat = () => {
     throw new Error('useChat must be used within a ChatProvider');
   }
   return context;
-
 };
