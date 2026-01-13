@@ -1,7 +1,7 @@
 // src/contexts/ChatContext.tsx
 import React, { createContext, useContext, useReducer, useEffect, useRef, ReactNode, useCallback } from 'react';
 import { Message } from '../models/ChatModels'; 
-import { fetchAIResponse, fetchImageResponse, fetchVideoResponse, fetchResearchResponse, fetchAudioResponse, fetchAgentResponse } from '../utils/api'; // Giả sử path đúng
+import { fetchAIResponse, fetchImageResponse, fetchVideoResponse, fetchResearchResponse, fetchAudioResponse, fetchAgentResponse } from '../utils/api'; 
 
 const AVAILABLE_MODELS = [
   { id: 'gemini-3-flash', name: 'Gemini ', version: '3.0' },
@@ -490,4 +490,5 @@ export const useChat = () => {
     throw new Error('useChat must be used within a ChatProvider');
   }
   return context;
+
 };
