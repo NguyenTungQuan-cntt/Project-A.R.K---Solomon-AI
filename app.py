@@ -13,6 +13,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 
 from google import genai
+from google.genai import types
 from google.api_core import exceptions as google_exceptions
 
 # --- 1. CẤU HÌNH HỆ THỐNG ---
@@ -52,9 +53,9 @@ MODEL_FLASH = "gemini-2.5-flash-lite"
 MODEL_PRO = "gemini-2.5-flash" 
 
 # --- MODEL POLLINATIONS AI ---
-P_MODEL_IMAGE = "flux"          # Model vẽ ảnh nghệ thuật, chi tiết nhất
-P_MODEL_VIDEO = "turbo"         # Model tốc độ cao, dùng cho hiệu ứng video/animation
-P_MODEL_REALISM = "flux-realism" # Model chuyên ảnh chụp người thật
+P_MODEL_IMAGE = "demo-api-key-media"          # Model vẽ ảnh nghệ thuật, chi tiết nhất
+P_MODEL_VIDEO = "demo-api-key-media"         # Model tốc độ cao, dùng cho hiệu ứng video/animation
+P_MODEL_REALISM = "demo-api-key-media" # Model chuyên ảnh chụp người thật
 
 # --- 2. SOLOMON SHIELD (QUẢN LÝ KEY) ---
 class SolomonShield:
@@ -62,6 +63,7 @@ class SolomonShield:
         all_keys = [os.getenv(f"GEMINI_FLASH_KEY_{i}", "").strip() for i in range(1, 8)]
         self.flash_pool = [k for k in all_keys[:4] if k]
         self.pro_pool = [k for k in all_keys[4:7] if k]
+        self.poll_key = os.getenv("POLLINATIONS_API_KEY_1", "").strip()
         self.flash_idx = 0
         self.pro_idx = 0
         self.blacklist = {}
@@ -128,15 +130,15 @@ class EphemeralAgent:
                 res = self.client.models.generate_content(
                     model=target_model,
                     contents=final_contents,
-                    config={
-                        'system_instruction': (
+                    config=types.GenerateContentConfig(
+                        system_instruction=(
                             "Bạn là Solomon AI. Trả lời CHÍNH XÁC, ĐÚNG TRỌNG TÂM câu hỏi. "
                             "Nếu có ảnh/video, hãy phân tích trực quan một cách sắc bén. "
                             "Không trả lời lan man, tập trung vào giá trị thông tin người dùng cần."
                         ),
-                        'temperature': 0.1, # Giảm sáng tạo để tăng độ chính xác
-                        'top_p': 0.9
-                    }
+                        temperature=0.1,
+                        top_p=0.9
+                    )
                 )
                 return res.text.strip() if res.text else "Solomon chưa thể xác định câu trả lời."
 
@@ -163,7 +165,13 @@ class EphemeralAgent:
                 url = f"https://image.pollinations.ai/prompt/{safe_prompt}?model={selected_model}&width=1024&height=1024&nologo=true&enhance=true&seed={uuid.uuid4().int}"
 
                 try:
-                    resp = requests.get(url, timeout=30)
+                    # 1. Tạo headers chứa Key (Lấy từ shield.poll_key đã thêm ở bước trước)
+                    # Nếu không có key thì để dict rỗng {}
+                    headers = {"Authorization": f"Bearer {shield.poll_key}"} if getattr(shield, 'poll_key', None) else {}
+
+                    # 2. Quan trọng: Truyền tham số headers=headers vào đây
+                    resp = requests.get(url, headers=headers, timeout=30)
+                    
                     if resp.status_code == 200 and len(resp.content) > 5000:
                         return {"text": ai_text, "media_bytes": resp.content}
                 except Exception as e:
