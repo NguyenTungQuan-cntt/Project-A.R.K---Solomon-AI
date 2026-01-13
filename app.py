@@ -237,28 +237,48 @@ def generate_media():
         data = request.get_json() or request.form
         prompt = data.get('prompt', '').strip()
         mode = data.get('mode', 'image')
-        if not prompt: return jsonify({"response": "Hãy nhập mô tả cho ảnh/video!"}), 400
+        if not prompt: return jsonify({"response": "Hãy nhập mô tả!"}), 400
 
         agent = EphemeralAgent(mode)
         result = agent.run(prompt)
         
         final_text = result.get("text")
         media_bytes = result.get("media_bytes")
-        image_url = ""
+        
+        # Khởi tạo các biến để tránh lỗi "not accessed"
+        current_url = ""
+        img_val = ""
+        vid_val = ""
 
         if media_bytes:
-            filename = f"ai_{uuid.uuid4().hex[:8]}.png"
-            with open(os.path.join(STATIC_VAULT, filename), "wb") as f:
+            # 1. Phân loại đuôi file thực tế
+            ext = "mp4" if mode == "video" else "jpg"
+            filename = f"ai_{uuid.uuid4().hex[:8]}.{ext}"
+            
+            file_path = os.path.join(STATIC_VAULT, filename)
+            with open(file_path, "wb") as f:
                 f.write(media_bytes)
-            image_url = f"{request.host_url.rstrip('/')}/static/ai_vault/{filename}"
+            
+            # 2. SỬA LỖI 304: Thêm timestamp (?t=...) để trình duyệt không dùng cache cũ
+            timestamp = int(time.time())
+            current_url = f"{request.host_url.rstrip('/')}/static/ai_vault/{filename}?t={timestamp}"
+
+            # 3. Phân loại Key cho Frontend
+            if mode == 'video':
+                vid_val = current_url
+                img_val = ""
+            else:
+                img_val = current_url
+                vid_val = ""
 
         return jsonify({
-            "response": final_text or "Solomon đã nhận được yêu cầu và đang xử lý...",
-            "url": image_url or "",       # Key chung
-            "imageUrl": image_url or "",  # Khớp với logic ChatContext.tsx tìm 'imageUrl'
-            "videoUrl": image_url or "",  # Khớp với logic ChatContext.tsx tìm 'videoUrl'
-            "status": "success" if image_url else "text_only"
+            "response": final_text or "Solomon đã hoàn thành!",
+            "url": current_url,
+            "imageUrl": img_val,
+            "videoUrl": vid_val,
+            "status": "success" if current_url else "text_only"
         }), 200
+
     except Exception as e:
         logger.error(f"‼️ TRACEBACK MEDIA:\n{traceback.format_exc()}")
         return jsonify({
