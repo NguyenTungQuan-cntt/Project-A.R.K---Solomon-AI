@@ -251,9 +251,16 @@ def generate_media():
         vid_val = ""
 
         if media_bytes:
+            # Lấy ngày tháng hiện tại theo định dạng YYYYMMDD
+            datestr = datetime.now().strftime("%Y%m%d")
+            
+            # Tạo chuỗi UUID ngắn (8 ký tự)
+            unique_id = uuid.uuid4().hex[:8]
+            
+            # Kết hợp lại thành filename
             # 1. Phân loại đuôi file thực tế
             ext = "mp4" if mode == "video" else "jpg"
-            filename = f"solomon_{uuid.uuid4().hex[:8]}.{ext}"
+            filename = f"solomon_{datestr}_{unique_id}.{ext}"
             
             file_path = os.path.join(STATIC_VAULT, filename)
             with open(file_path, "wb") as f:
@@ -289,10 +296,14 @@ def generate_media():
 
 @app.route('/static/ai_vault/<path:filename>')
 def serve_file(filename):
-    return send_from_directory(STATIC_VAULT, filename)
+    # as_attachment=True sẽ ép trình duyệt tải file thay vì xem trực tiếp
+    return send_from_directory(
+        STATIC_VAULT, 
+        filename, 
+        as_attachment=True
+    )
 
 if __name__ == '__main__':
     shutil.rmtree(TEMP_PROCESSING, ignore_errors=True)
     os.makedirs(TEMP_PROCESSING, exist_ok=True)
     app.run(debug=DEBUG_MODE, host='0.0.0.0', port=PORT, threaded=True)
-
