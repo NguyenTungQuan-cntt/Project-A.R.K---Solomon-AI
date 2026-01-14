@@ -253,7 +253,7 @@ def generate_media():
         if media_bytes:
             # 1. Phân loại đuôi file thực tế
             ext = "mp4" if mode == "video" else "jpg"
-            filename = f"ai_{uuid.uuid4().hex[:8]}.{ext}"
+            filename = f"solomon_{uuid.uuid4().hex[:8]}.{ext}"
             
             file_path = os.path.join(STATIC_VAULT, filename)
             with open(file_path, "wb") as f:
@@ -295,3 +295,4 @@ if __name__ == '__main__':
     shutil.rmtree(TEMP_PROCESSING, ignore_errors=True)
     os.makedirs(TEMP_PROCESSING, exist_ok=True)
     app.run(debug=DEBUG_MODE, host='0.0.0.0', port=PORT, threaded=True)
+
